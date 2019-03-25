@@ -1,10 +1,9 @@
 from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .forms import DocumentForm
+from .models import Match, Candidate, CV, Job
 
 def model_form_upload(request):
     if request.method == 'POST':
@@ -17,3 +16,16 @@ def model_form_upload(request):
     return render(request, 'cvjd/upload.html', {
         'form': form
     })
+
+def render_matches(request):
+    all_matches = {}
+    all_jobs = [i.job.job_name for i in Match.objects.all()]
+    for job in all_jobs:
+        candi = Match.objects.filter(job=Job.objects.get(job_name=job))
+        all_matches[job] = candi
+    return render(request, 'cvjd/index.html', {'all_matches':all_matches})
+    
+
+def candidate_details(request, id):
+    candidate = Candidate.objects.get(id=id)
+    return render(request, 'cvjd/candidate.html', {'candidate':candidate})

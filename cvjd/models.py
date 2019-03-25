@@ -1,6 +1,6 @@
 import os
 from django.db import models
-
+import pandas as pd
 
 
 class Job(models.Model):
@@ -12,7 +12,6 @@ class Job(models.Model):
 
     def __str__(self):
         return self.job_name
-
 
 
 class CV(models.Model):
@@ -38,6 +37,21 @@ class Candidate(models.Model):
     '''
     name = models.CharField(max_length=100, blank=True, null=True)
     cv = models.ForeignKey(CV, on_delete=models.CASCADE)
-    
+
     def __str__(self):
-        pass
+        return self.name or 'Candidate '
+
+
+class Match(models.Model):
+    '''
+    rank class
+    '''
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete = models.CASCADE)
+    score = models.FloatField(null=True, blank=True, default=0.0)
+
+    def fill_score(self):
+        raise NotImplementedError
+
+    def __str__(self):
+        return 'Match of {} in {}'.format(self.candidate.name, self.job.job_name)

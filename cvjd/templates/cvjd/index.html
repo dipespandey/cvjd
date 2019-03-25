@@ -1,0 +1,33 @@
+{% extends "cvjd/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="heading" style="margin-bottom:60px;">
+    <h3 class="text-center">Candidate to CV Matching Score Report</h3>
+</div>
+{% for job,candidates in all_matches.items %}
+    <div class="job">
+        <h4>{{job}}</h4>
+    </div>
+    <br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Candidate</th>
+                <th scope="col">Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for candidate in candidates %}
+            <tr>
+                <td><a href="{% url 'candidates' id=candidate.candidate.id %}">{{candidate.candidate.name}}</a></td>
+                <td>{{candidate.score}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+<br><br>
+{% endfor %}
+{% endblock %}

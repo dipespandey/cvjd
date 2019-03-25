@@ -9,6 +9,7 @@ import re
 import sys
 import string
 from tika import parser
+from cvjd.models import CV
 
 def filter_cvs(cv_folder) -> list:
     """
@@ -47,5 +48,38 @@ def parse_cv(file: str) -> str:
     return text
 
 
-
-
+class Rule():
+    '''
+    Rule class containing several rules to extract 
+    several information from the CV
+    '''
+    def __init__(self, cv):
+        self.cv = cv
+    
+    def get_candidate_name(self):
+        cv_name = self.cv.name
+        print(cv_name)
+        name = cv_name.lower().split('cv')[0]
+        full_name = name.split('_')
+        full_name = full_name[0] + ' ' + full_name[1]
+        candidate = self.cv.candidate_set.first()
+        candidate.name = full_name
+        candidate.save()
+    
+    def find_email(self, ):
+        raise NotImplementedError
+    
+    def find_phone(self, ):
+        raise NotImplementedError
+    
+    def find_experience_years(self,):
+        raise NotImplementedError
+    
+    def find_education_terms(self, ):
+        raise NotImplementedError
+    
+    def find_skills(self, ):
+        raise NotImplementedError
+    
+    def __str__(self):
+        return self.cv
