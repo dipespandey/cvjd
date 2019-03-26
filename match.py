@@ -95,4 +95,4 @@ def plot_keyword_counts(final_database):
             height = rect.get_height()
             ax.text(x + width/2., y + height/2., label, ha='center', va='center')
     # plt.show()
-    plt.savefig('out.eps', format='eps', dpi=1000)
+    # plt.savefig('out.eps', format='eps', dpi=1000)
