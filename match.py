@@ -96,3 +96,22 @@ def plot_keyword_counts(final_database):
             ax.text(x + width/2., y + height/2., label, ha='center', va='center')
     # plt.show()
     # plt.savefig('out.eps', format='eps', dpi=1000)
+
+
+def create_score():
+    df = pd.read_csv('/Users/dipespandey/professional/cvjd/sample.csv', index_col=False)
+    final_db = []
+    for i in range(df.shape[0]):
+        score_dict = {}
+        series = df.loc[i]
+        max_score = max(series[1:])
+        keys = df.loc[i].keys()
+        candi = series['Candidate Name']
+        for j in keys:
+            if df.loc[i][j] == max_score:
+                score_dict['candidate'] = candi
+                score_dict['score'] = max_score
+                score_dict['job'] = j 
+                final_db.append(score_dict)
+    return final_db
+                
