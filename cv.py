@@ -67,10 +67,21 @@ class Rule():
         candidate.save()
     
     def find_email(self, ):
-        raise NotImplementedError
-    
+        regex = r"\S+@\S+"
+        cv = self.cv.name
+        email = re.findall(regex, cv.text_from_doc)
+        if email is not None:
+            return email[0]
+        return ''
+
+            
     def find_phone(self, ):
-        raise NotImplementedError
+        regex = r"\+?\d+(?:[- \)]+\d+)+"
+        cv = self.cv.name
+        phone = re.findall(regex, cv.text_from_doc)
+        if phone is not None:
+            return phone[0]
+        return ''
     
     def find_experience_years(self,):
         raise NotImplementedError

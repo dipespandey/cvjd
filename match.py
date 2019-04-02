@@ -1,6 +1,7 @@
 '''
 Module that does the matching
 '''
+import pickle
 from os import listdir
 from os.path import isfile, join
 from io import StringIO
@@ -13,7 +14,8 @@ from spacy.matcher import PhraseMatcher
 from dataset.jd_dataset import preprocess
 from cvjd.models import CV, Candidate
 import matplotlib.pyplot as plt
-
+from dataset import jd
+import numpy as np
 
 def create_profile(text, candi_name):
     text = str(text)    
@@ -21,10 +23,15 @@ def create_profile(text, candi_name):
     text = preprocess(text)
     text = ' '.join(text)
     # Create JD Dataset
-    df_jd = pd.read_csv("/Users/dipespandey/professional/cvjd/dataset/latest.csv", index_col=False)
+    # df_jd = pd.read_csv("/Users/dipespandey/professional/cvjd/dataset/latest_jd.csv", index_col=False)
+    df_jd = jd.df_jd
     total_dataset = {}
     for job in df_jd:
-        total_dataset[job] = [nlp(text) for text in df_jd[job].dropna(axis=0)]
+        temp_keys = []
+        for key in df_jd[job]:
+            if key is not np.nan:
+                temp_keys.append(key)
+        total_dataset[job] = [nlp(text) for text in temp_keys]
     
     matcher = PhraseMatcher(nlp.vocab)
     for job in total_dataset:
@@ -51,17 +58,24 @@ def create_profile(text, candi_name):
     dataf['Candidate Name'].fillna(dataf['Candidate Name'].iloc[0], inplace = True)
     print(dataf.Subject)
     return dataf
+    
 
 def multi_run_wrapper(args):
     dataf = create_profile(*args)
     print(dataf.shape)
     return dataf
     
+
 def multiprocess_run():
     pool = mp.Pool(processes=mp.cpu_count())
     all_maps = [(candi.cv.text_from_doc, candi.name) for candi in Candidate.objects.all()]
     new_datafs = pool.map(multi_run_wrapper, all_maps)
-    return new_datafs
+    total_db = pd.DataFrame()
+    for i in new_datafs:
+        total_db = total_db.append(i)
+    total_db.to_csv('dataset/total_db.csv')
+    return total_db
+
 
 def single_process_run():
     final_db = pd.DataFrame()
