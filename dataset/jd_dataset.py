@@ -39,7 +39,6 @@ def create_keywords(df: DataFrame) -> DataFrame:
     df_n = pd.DataFrame(columns=df.columns)
     for i in df_n:
         list_title = i.lower().split('_')
-        list_title = list_title * 10
         keywords = preprocess(df[i][0])
         df_n[i] = pd.Series(keywords+list_title)
     return df_n
@@ -59,16 +58,8 @@ def get_wordnet_pos(word):
 def preprocess(text):
     stop_words = set(stopwords.words("english"))
 
-    new_words = ['also', 'based', 'new', 'great', 'similar', 'run', 'role', 'day', 'working', 'always',
-                 'must', 'may', 'along', 'held', 'well', 'lot', 'special',
-                 'similar', 'often', 'high', 'entire', 'main', 'preparing', 'etc', 'keep', 'time', 'small', 'take', 'takes', 'regardless', 'able', 
-                 'take', 'likely', 'responsible', 'importantly', 'advanced', 'run' , 'work', 'everything', 'list', 'find', 'assumes', 'important', 
-                 'could', 'ensure', 'highly', 'undertakes']
-
-    stop_words = stop_words.union(new_words)
-
     # Remove punctuations
-    # text = re.sub("[^a-zA-Z0-9]", " ", str(text))
+    text = re.sub("[^a-zA-Z0-9]", " ", str(text))
 
     # Convert to lowercase
     text = text.lower()
@@ -76,10 +67,10 @@ def preprocess(text):
     # Convert to list from string
     text = nltk.word_tokenize(text)
 
-    # Lemmatization
-    lem = WordNetLemmatizer()
-    text = [lem.lemmatize(word, get_wordnet_pos(word)) for word in text if not word in stop_words]
-    # print(text)
+    # # Lemmatization
+    # lem = WordNetLemmatizer()
+    text = [word for word in text if not word in stop_words]
+    # # print(text)
     # text = " ".join(text)
     return text
 

@@ -83,6 +83,11 @@ class Rule():
             return phone[0]
         return ''
     
+    def isMarried(self, ):
+        cv = self.cv
+        
+        return False
+    
     def find_experience_years(self,):
         raise NotImplementedError
     

@@ -46,9 +46,10 @@ class Match(models.Model):
     '''
     rank class
     '''
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    job = models.ForeignKey(Job, on_delete = models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='candidate')
+    job = models.ForeignKey(Job, on_delete = models.CASCADE, related_name='job')
     score = models.FloatField(null=True, blank=True, default=0.0)
+    link = 'Edit'
 
     def fill_score(self):
         raise NotImplementedError
