@@ -18,7 +18,7 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ['candidate', 'job', 'score', 'get_cv', 'link',]
     list_display_links = ['link',]
     list_editable = ['job', 'score', ]
-
+    ordering = ['-score']
     def get_cv(self, obj):
         return truncatewords(obj.candidate.cv.text_from_doc, 100)
     
