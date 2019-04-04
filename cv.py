@@ -68,19 +68,21 @@ class Rule():
     
     def find_email(self, ):
         regex = r"\S+@\S+"
-        cv = self.cv.name
-        email = re.findall(regex, cv.text_from_doc)
-        if email is not None:
-            return email[0]
+        cv = self.cv
+        if cv.text_from_doc is not None:
+            email = re.findall(regex, cv.text_from_doc)
+            if len(email)>0:
+                return email[0]
         return ''
 
             
     def find_phone(self, ):
         regex = r"\+?\d+(?:[- \)]+\d+)+"
-        cv = self.cv.name
-        phone = re.findall(regex, cv.text_from_doc)
-        if phone is not None:
-            return phone[0]
+        cv = self.cv
+        if cv.text_from_doc is not None:
+            phone = re.findall(regex, cv.text_from_doc)
+            if len(phone)>0:
+                return phone[0]
         return ''
     
     def isMarried(self, ):
