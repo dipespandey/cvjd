@@ -19,12 +19,13 @@ def model_form_upload(request):
 
 def render_matches(request):
     all_matches = {}
-    all_jobs = [i.job.job_name for i in Match.objects.all()]
+    all_jobs = [i.job_name for i in Job.objects.all()]
     for job in all_jobs:
         candi = Match.objects.filter(
             job=Job.objects.get(job_name=job), score__gt=10
         ).order_by("-score")
-        all_matches[job] = candi
+        if len(candi)>0:
+            all_matches[job] = candi
     return render(request, "cvjd/index.html", {"all_matches": all_matches})
 
 

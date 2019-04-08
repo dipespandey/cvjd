@@ -1,7 +1,7 @@
 import os
 from django.db import models
 import pandas as pd
-
+import math
 
 class Job(models.Model):
     '''
@@ -9,6 +9,9 @@ class Job(models.Model):
     '''
     description = models.TextField(blank=True, null=True)
     job_name = models.CharField(max_length=50, blank=True, null=True)
+
+    def set_max_score(self, ):
+        pass
 
     def __str__(self):
         return self.job_name
@@ -49,10 +52,32 @@ class Match(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name='candidate')
     job = models.ForeignKey(Job, on_delete = models.CASCADE, related_name='job')
     score = models.FloatField(null=True, blank=True, default=0.0)
-    link = 'Edit'
+    top_keywords = models.TextField(null=True, blank=True)
+    email = models.CharField(null=True, blank=True, max_length=50)
+    phone = models.CharField(null=True, blank=True, max_length=50)
+
+    class Meta:
+        verbose_name_plural = "Matches"
 
     def fill_score(self):
-        raise NotImplementedError
+        '''
+        Use the most score attained in a job as 100%
+        '''
+        
 
     def __str__(self):
         return 'Match of {} in {}'.format(self.candidate.name, self.job.job_name)
+    
+
+def percentage_score():
+    # Convert match object scores into percentage matches
+    all_matches = Match.objects.all()
+    for i in all_matches: 
+        scores = [] 
+        for j in all_matches[i]: 
+            scores.append(j.score) 
+        if len(scores)>0: 
+            max_score = max(scores) 
+        for k in all_matches[i]: 
+            k.score = math.ceil(k.score/max_score*100) 
+            k.save() 

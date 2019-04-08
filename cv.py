@@ -77,12 +77,16 @@ class Rule():
 
             
     def find_phone(self, ):
-        regex = r"\+?\d+(?:[- \)]+\d+)+"
+        regex = r"\+?\d+(?:[-? \)]+\d+)+"
         cv = self.cv
         if cv.text_from_doc is not None:
             phone = re.findall(regex, cv.text_from_doc)
             if len(phone)>0:
-                return phone[0]
+                if len(phone[0])>9:
+                    return phone[0]
+            elif len(phone)>1:
+                if len(phone[1])>9:
+                    return phone[1]
         return ''
     
     def isMarried(self, ):

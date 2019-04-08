@@ -16,13 +16,17 @@
             <tr>
                 <th scope="col">Candidate</th>
                 <th scope="col">Score</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
             </tr>
         </thead>
         <tbody>
         {% for candidate in candidates %}
             <tr>
                 <td><a href="{% url 'candidates' id=candidate.candidate.id %}">{{candidate.candidate.name}}</a></td>
-                <td>{{candidate.score}}</td>
+                <td>{{candidate.score | stringformat:'d' }} %</td>
+                <td>{{candidate.email}}</td>
+                <td>{{candidate.phone}}</td>
             </tr>
         {% endfor %}
     </tbody>
