@@ -20,7 +20,7 @@ class CVAdmin(admin.ModelAdmin):
 
 class MatchAdmin(admin.ModelAdmin):
     model = Match
-    list_display = ['candidate', 'job', 'candidate_score', 'top_keywords', 'email', 'phone',]
+    list_display = ['candidate', 'job', 'candidate_score', 'nationality', 'top_keywords', 'email', 'phone',]
     list_editable = ['job',]
     ordering = ['-score']
     search_fields = ['candidate__name', 'job__job_name', 'email', 'top_keywords', 'phone']

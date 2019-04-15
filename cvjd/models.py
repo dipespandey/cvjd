@@ -55,6 +55,7 @@ class Match(models.Model):
     top_keywords = models.TextField(null=True, blank=True)
     email = models.CharField(null=True, blank=True, max_length=50)
     phone = models.CharField(null=True, blank=True, max_length=50)
+    nationality = models.CharField(null=True, blank=True, max_length=50)
 
     class Meta:
         verbose_name_plural = "Matches"
@@ -63,6 +64,7 @@ class Match(models.Model):
         '''
         Use the most score attained in a job as 100%
         '''
+        pass
         
 
     def __str__(self):

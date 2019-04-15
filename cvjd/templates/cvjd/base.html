@@ -10,8 +10,24 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     </head>
+    {% block style %}
+    {% endblock %}
+   
     <body>
+
         <div class="container">
+                <div style="margin-top: 40px;">
+                    <div class="navbar" style="text-align: left;">
+                        {% if user.is_authenticated %}
+                            <!-- <p>Hi {{ user.username }}!</p> -->
+                            <a href="{% url 'logout' %}">
+                                <button class="btn btn-danger">logout</button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}"></a>
+                        {% endif %}
+                    </div>
+                </div>
             <div class="navbar" style="margin-top:30px;"></div>
             {% block content %} {% endblock %}
         </div>

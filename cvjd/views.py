@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .forms import DocumentForm
 from .models import Match, Candidate, CV, Job
+from django.contrib.auth.decorators import login_required
 
 
 def model_form_upload(request):
@@ -16,7 +17,7 @@ def model_form_upload(request):
         form = DocumentForm()
     return render(request, "cvjd/upload.html", {"form": form})
 
-
+@login_required(login_url='/login')
 def render_matches(request):
     all_matches = {}
     all_jobs = [i.job_name for i in Job.objects.all()]

@@ -77,7 +77,7 @@ class Rule():
 
             
     def find_phone(self, ):
-        regex = r"\+?\d+(?:[-? \)]+\d+)+"
+        regex = r"\+\d+(?:[-? \)]+\d+)+"
         cv = self.cv
         if cv.text_from_doc is not None:
             phone = re.findall(regex, cv.text_from_doc)
@@ -93,6 +93,18 @@ class Rule():
         cv = self.cv
         
         return False
+    
+    def nationality(self, ):
+        cv = self.cv 
+        regex = r"citizenship[:\s*\t*]*\w+"
+        regex = re.compile(regex)
+        if cv.text_from_doc is not None:
+            text = cv.text_from_doc.lower().replace('\t', ' ')
+            nationality = re.findall(regex, text)
+            if len(nationality)>0:
+                return nationality[0]
+        return ''
+        
     
     def find_experience_years(self,):
         raise NotImplementedError

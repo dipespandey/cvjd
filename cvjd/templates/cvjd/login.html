@@ -1,0 +1,30 @@
+{% extends 'cvjd/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Login{% endblock %}
+{% block style %}
+    <style>
+        .formfield{
+            max-width: 50%;;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="leftview" style="text-align: left;">
+        <h4>Exclusive Tailored Admin Login</h4>
+        <div style="margin-top: 30px;"></div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="formfield">
+                    {{ form.username|as_crispy_field }}
+            </div>
+            <div class="formfield">
+                    {{ form.password|as_crispy_field }}
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+  
+{% endblock %}
