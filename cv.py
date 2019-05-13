@@ -104,7 +104,9 @@ class Rule():
             if len(nationality)>0:
                 return nationality[0]
         return ''
-        
+    
+    def current_position(self, ):
+        raise NotImplementedError
     
     def find_experience_years(self,):
         raise NotImplementedError

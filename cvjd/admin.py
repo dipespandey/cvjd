@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import CV, Candidate, Job, Match
+from django.contrib.admin.models import LogEntry
+LogEntry.objects.all().delete()
 from django.template.defaultfilters import truncatewords
 import sys
 sys.path.insert(0, '/Users/dipespandey/professional/cvjd')
@@ -13,6 +15,7 @@ set_of_keys = set()
 for i in dict_of_jobs.values():
     set_of_keys = set_of_keys.union(set(i))
 
+
 class CVAdmin(admin.ModelAdmin):
     list_display = ('name','document',)
     search_fields = ['name','text_from_doc',]
@@ -21,9 +24,18 @@ class CVAdmin(admin.ModelAdmin):
 class MatchAdmin(admin.ModelAdmin):
     model = Match
     list_display = ['candidate', 'job', 'candidate_score', 'nationality', 'top_keywords', 'email', 'phone',]
+    list_filter = ['job', ]
     list_editable = ['job',]
     ordering = ['-score']
     search_fields = ['candidate__name', 'job__job_name', 'email', 'top_keywords', 'phone']
+    readonly_fields = ['candidate_score', 'job', 'candidate', 'nationality', 'top_keywords', 'email', 'phone']
+    actions = None
+    
+    class Media:
+        js = ('cvjd/js/main.js',)
+
+    def has_add_permission(self, request):
+        return False
 
     def get_cv(self, obj):
         return truncatewords(obj.candidate.cv.text_from_doc, 20)

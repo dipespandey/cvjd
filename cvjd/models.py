@@ -53,9 +53,11 @@ class Match(models.Model):
     job = models.ForeignKey(Job, on_delete = models.CASCADE, related_name='job')
     score = models.FloatField(null=True, blank=True, default=0.0)
     top_keywords = models.TextField(null=True, blank=True)
+    current_position = models.CharField(null=True, blank=True, max_length=100)
     email = models.CharField(null=True, blank=True, max_length=50)
     phone = models.CharField(null=True, blank=True, max_length=50)
     nationality = models.CharField(null=True, blank=True, max_length=50)
+    notes = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Matches"
@@ -83,3 +85,9 @@ def percentage_score():
         for k in all_matches[i]: 
             k.score = math.ceil(k.score/max_score*100) 
             k.save() 
+
+
+def get_current_position(match):
+    # Get current position using regex
+    cur_regex = "officer|fourth engineer|divemaster|carpenter|third officer|sous chef|mate|therapist|manicurist|aec|steward|teacher|engineer|housekeeper|eto|sommelier|chief engineer|crew chef|chef|meol|deckhand|hairdreeser|second steward|lead deckhand|electrician|head chef|pwc instructor|eoow|stewardess|third engineer|purser|oow|florist|yoga instructor|avit|chief steward|captain|yachtmaster|chief mate|second chef|manager|first officer|head of service|wset|second officer|powerboater|navigational officer|second engineer|seamstress|barista|bosun"
+    
