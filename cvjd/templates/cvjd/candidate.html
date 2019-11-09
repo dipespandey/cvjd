@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 
   {% block content %}
+  <div class="heading" style="margin-bottom:60px;">
+      <a href="{%url 'index' %}"><h3 class="text-center">Candidate to CV Matching Score Report</h3></a>
+  </div>
     <h4>{{candidate.name}}</h4><br>
     <p class="text-justify">{{candidate.cv.text_from_doc}}</p>
   {% endblock %}

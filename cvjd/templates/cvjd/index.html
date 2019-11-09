@@ -4,11 +4,12 @@
 
 {% block content %}
 <div class="heading" style="margin-bottom:60px;">
-    <h3 class="text-center">Candidate to CV Matching Score Report</h3>
+    <a href="{%url 'index' %}"><h3 class="text-center">Candidate to CV Matching Score Report</h3></a>
 </div>
 {% for job,candidates in all_matches.items %}
     <div class="job">
-        <h4>{{job}}</h4>
+        <!-- {{job}} -->
+        <h4><a href="{% url 'jobwise_results' job %}">{{job}}</a></h4>
     </div>
     <br>
     <table class="table table-striped">
@@ -23,13 +24,19 @@
         </thead>
         <tbody>
         {% for candidate in candidates %}
+            <!-- {% if forloop.counter < 11 %} -->
             <tr>
-                <td><a href="{% url 'candidates' id=candidate.candidate.id %}">{{candidate.candidate.name}}</a></td>
+                {% if candidate.candidate.cv.drive_url %}
+                    <td><a target="_blank" href="{{candidate.candidate.cv.drive_url}}">{{candidate.candidate.name}}</a></td>
+                {% else %}
+                    <td><a href="{% url 'candidates' id=candidate.candidate.id %}">{{candidate.candidate.name}}</a></td>
+                {% endif %}
                 <td>{{candidate.score | stringformat:'d' }} %</td>
-                <td>{{candidate.email}}</td>
+		<td><a href="mailto:{{candidate.email}}">{{candidate.email}}</td>
                 <td>{{candidate.nationality}}</td>
-                <td>{{candidate.phone}}</td>
+		<td><a href="tel:{{candidate.phone}}">{{candidate.phone}}</td>
             </tr>
+            <!-- {% endif%} -->
         {% endfor %}
     </tbody>
 </table>

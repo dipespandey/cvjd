@@ -1,0 +1,64 @@
+{% extends "cvjd/base.html" %}
+{% load static %}
+{% block content %}
+<div class="heading" style="margin-bottom:60px;">
+    <a href="{%url 'index' %}"><h3 class="text-center">Candidate to CV Matching Score Report</h3></a>
+</div>
+
+    <br>
+    <div class="job">
+            <!-- {{job}} -->
+            <h4>{{job}}</a></h4>
+        </div>
+        <br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Candidate</th>
+                <th scope="col">Score</th>
+                <th scope="col">Email</th>
+                <th scope="col">Nationality</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for match in matches %}
+            <tr>
+                {% if match.candidate.cv.drive_url %}
+                    <td><a target="_blank" href="{{match.candidate.cv.drive_url}}">{{match.candidate.name}}</a></td>
+                {% else %}
+                    <td><a href="{% url 'candidates' id=match.candidate.id %}">{{match.candidate.name}}</a></td>
+                {% endif %}
+                <td>{{match.score | stringformat:'d' }} %</td>
+		<td><a href="mailto:{{candidate.email}}">{{match.email}}</td>
+                <td>{{match.nationality}}</td>
+		<td><a href="tel:{{candidate.phone}}">{{match.phone}}</td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+<hr>
+<br><br>
+{% if matches.has_other_pages %}
+  <ul class="pagination">
+    {% if matches.has_previous %}
+      <li><a href="?page={{ matches.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in matches.paginator.page_range %}
+      {% if matches.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if matches.has_next %}
+      <li><a href="?page={{ matches.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+{% endblock %}

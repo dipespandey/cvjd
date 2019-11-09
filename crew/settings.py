@@ -25,7 +25,7 @@ SECRET_KEY = '@+!e84eo0t2k3kc)=+x*+_x$vnj0fwi%6f!-*2&m^s3=+*6ezp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['exclusivetailored.ml', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'exclusivetailored.ml']
 
 
 # Application definition
@@ -60,7 +60,7 @@ LOGIN_REDIRECT_URL = 'index'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'template')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,9 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"), # your static/ files folder
-]
+# STATICFILES_DIRS = [
+#             os.path.join(BASE_DIR, "static"), # your static/ files folder
+#             ]

@@ -21,9 +21,6 @@ def create_profile(text, candi_name):
     text = str(text)    
     # Create CV Dataset
     text = text.lower()
-    # text = ' '.join(text)
-    # Create JD Dataset
-    # df_jd = pd.read_csv("/Users/dipespandey/professional/cvjd/dataset/latest_jd.csv", index_col=False)
     df_jd = jd.df_jd
     total_dataset = {}
     for job in df_jd:

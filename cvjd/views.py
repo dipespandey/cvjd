@@ -5,9 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from .forms import DocumentForm
 from .models import Match, Candidate, CV, Job
 from django.contrib.auth.decorators import login_required
-from django.db.models.functions import Length
-from django.db import models
-models.CharField.register_lookup(Length, 'length')
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def model_form_upload(request):
@@ -24,14 +22,30 @@ def model_form_upload(request):
 @login_required(login_url='/login')
 def render_matches(request):
     all_matches = {}
-    all_jobs = [i.job_name for i in Job.objects.all()]
+    all_jobs = [i for i in Job.objects.all()]
     for job in all_jobs:
         candi = Match.objects.filter(
-            job=Job.objects.get(job_name=job), score__gt=10,
+            job=Job.objects.get(job_name=job.job_name), score__gt=0
         ).order_by("-score")
+        print(candi)
         if len(candi)>0:
-            all_matches[job] = candi
+            all_matches[job.job_name] = candi
     return render(request, "cvjd/index.html", {"all_matches": all_matches})
+
+
+def jobwise_results(request, job_name):
+    matches = Match.objects.filter(
+        job=Job.objects.get(job_name=job_name), score__gt=0
+    ).order_by("-score")
+    page = request.GET.get('page', 1)
+    paginator = Paginator(matches, 10)
+    try:
+        matches = paginator.page(page)
+    except PageNotAnInteger:
+        matches = paginator.page(1)
+    except EmptyPage:
+        matches = paginator.page(paginator.num_pages)
+    return render(request, "cvjd/jobwise.html", {"matches": matches, "job": job_name})
 
 
 def candidate_details(request, id):

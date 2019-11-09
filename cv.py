@@ -10,6 +10,7 @@ import sys
 import string
 from tika import parser
 from cvjd.models import CV
+import datetime
 
 def filter_cvs(cv_folder) -> list:
     """
@@ -104,9 +105,7 @@ class Rule():
             if len(nationality)>0:
                 return nationality[0]
         return ''
-    
-    def current_position(self, ):
-        raise NotImplementedError
+        
     
     def find_experience_years(self,):
         raise NotImplementedError
